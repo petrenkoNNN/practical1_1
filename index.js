@@ -1,0 +1,71 @@
+const books = [
+  'Мастер и Маргарита',
+  'Гарри Поттер',
+  'Над пропастью во ржи',
+  'Властелин колец',
+  'Дюна',
+  'Отцы и дети'
+];
+
+const bookList = document.getElementById('book-list');
+const addBtn = document.getElementById('add-btn');
+const searchBtn = document.getElementById('search-btn');
+
+function renderBooks(foundIndex = -1) {
+  bookList.innerHTML = '';
+
+  books.forEach((title, index) => {
+    const li = document.createElement('li');
+    li.textContent = `${index + 1}) ${title}`;
+
+    if (index === foundIndex) {
+      li.classList.add('found');
+    }
+
+    bookList.appendChild(li);
+  });
+}
+
+function addBook() {
+  const input = prompt('Введите название книги:');
+
+  if (input === null) {
+    return;
+  }
+
+  const title = input.trim();
+
+  if (title === '') {
+    alert('Название книги не введено!');
+    return;
+  }
+
+  books.push(title);
+  renderBooks();
+}
+
+function searchBook() {
+  const input = prompt('Введите название книги для поиска:');
+
+  if (input === null) {
+    return;
+  }
+
+  const query = input.trim().toLowerCase();
+  const foundIndex = books.findIndex(
+    (title) => title.toLowerCase() === query
+  );
+
+  if (query === '' || foundIndex === -1) {
+    alert('Книга не найдена!');
+    renderBooks();
+    return;
+  }
+
+  renderBooks(foundIndex);
+}
+
+addBtn.addEventListener('click', addBook);
+searchBtn.addEventListener('click', searchBook);
+
+renderBooks();
