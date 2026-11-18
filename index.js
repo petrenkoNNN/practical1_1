@@ -7,9 +7,9 @@ const books = [
   'Отцы и дети'
 ];
 
-const bookList = document.getElementById('book-list');
-const addBtn = document.getElementById('add-btn');
-const searchBtn = document.getElementById('search-btn');
+const bookList = document.querySelector('#book-list');
+const addBtn = document.querySelector('#add-btn');
+const searchBtn = document.querySelector('#search-btn');
 
 function renderBooks(foundIndex = -1) {
   bookList.innerHTML = '';
@@ -52,17 +52,24 @@ function searchBook() {
   }
 
   const query = input.trim().toLowerCase();
+  const items = bookList.querySelectorAll('li');
+  items.forEach(item => item.classList.remove('found'));
+
+  if (query === '') {
+    alert('Книга не найдена!');
+    return;
+  }
+
   const foundIndex = books.findIndex(
     (title) => title.toLowerCase() === query
   );
 
-  if (query === '' || foundIndex === -1) {
+  if (foundIndex === -1) {
     alert('Книга не найдена!');
-    renderBooks();
     return;
   }
 
-  renderBooks(foundIndex);
+  items[foundIndex].classList.add('found');
 }
 
 addBtn.addEventListener('click', addBook);
